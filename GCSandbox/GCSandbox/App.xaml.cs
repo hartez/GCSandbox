@@ -10,7 +10,7 @@ namespace GCSandbox
 		{
 			InitializeComponent();
 
-			MainPage = new MainPage();
+			MainPage = new SingleItem();
 		}
 
 		protected override void OnStart()
