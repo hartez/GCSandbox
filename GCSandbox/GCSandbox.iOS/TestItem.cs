@@ -1,28 +1,36 @@
 ﻿using System.Threading;
-using System.Diagnostics;
 using UIKit;
+using Xamarin.Forms;
 
 namespace GCSandbox.iOS
 {
-	public class TestItem : UITextField
-    {
-        public static int s_count;
+	public class TestItem : UITextField // Change this to a UILabel or UIButton and the GC can clean it up just fine
+	{
+		private readonly string _testType;
 
-        public TestItem()
+		public TestItem(string testType)
         {
-            var count = Interlocked.Increment(ref s_count);
-            //Debug.WriteLine($">>>>>> Constructor, {count} allocated.");
-        }
+			TestHelpers.NotifyAllocation(testType);
+			_testType = testType;
+		}
 
         ~TestItem()
         {
-            var count = Interlocked.Decrement(ref s_count);
-            Debug.WriteLine($">>>>>> Finalizer, {count} allocated.");
+			TestHelpers.NotifyFinalization(_testType);
         }
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				TestHelpers.NotifyDisposal(_testType);
+			}
+
+			base.Dispose(disposing);
+		}
 
 		public void TextChangedHandler(object sender, System.EventArgs e)
 		{
-			Debug.WriteLine($">>>>>> This is the handler for the event.");
 		}
 	}
 }

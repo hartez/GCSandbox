@@ -9,7 +9,7 @@ namespace GCSandbox.UWP
 	{
 		public void RunTest()
 		{
-			TestStuff.RunTest(GenerateTestObjects, () => TestItem.s_count);
+			TestHelpers.RunTests(GenerateTestObjects);
 		}
 
 		void GenerateTestObjects()
@@ -23,13 +23,13 @@ namespace GCSandbox.UWP
 		void CreateItemOnly()
 		{
 			// Creating an instance of a .NET subclass of a native type
-			new TestItem();
+			new TestItem("CreateOnly");
 		}
 
 		void WithLocalEventHandler()
 		{
 			// Creating an instance of a .NET subclass of a native type
-			var x = new TestItem();
+			var x = new TestItem("WithLocalEventHandler");
 
 			// And setting up a local handler for a native event
 			// This means that the TestItem has a reference to this (GarbageCollectionTester)
@@ -39,7 +39,7 @@ namespace GCSandbox.UWP
 		void SelfEventHandler()
 		{
 			// Creating an instance of a .NET subclass of a native type
-			var x = new TestItem();
+			var x = new TestItem("SelfEventHandler");
 
 			// The class has its own event handler
 			// So it's holding a reference to itself
@@ -49,8 +49,8 @@ namespace GCSandbox.UWP
 		void MutualEventHandlers()
 		{
 			// Creating two instances of a .NET subclass of a native type
-			var x = new TestItem();
-			var y = new TestItem();
+			var x = new TestItem("MutualEventHandlers");
+			var y = new TestItem("MutualEventHandlers");
 
 			// Set each as the other's event handler
 			// So each object will hold a reference to the other

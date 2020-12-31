@@ -1,17 +1,16 @@
 ﻿using Android.Widget;
 using Android.Content;
-using System.Threading;
 
 namespace GCSandbox.Droid
 {
 	public class TestItem : TextView
 	{
-		public static int s_count;
+		private readonly string _testType;
 
-		public TestItem(Context context) : base(context)
+		public TestItem(Context context, string testType) : base(context)
 		{
-			var count = Interlocked.Increment(ref s_count);
-			//System.Diagnostics.Debug.WriteLine($">>>>>> Constructor, {count} allocated.");
+			TestHelpers.NotifyAllocation(testType);
+			_testType = testType;
 		}
 
 		public void TextChangedHandler(object sender, Android.Text.TextChangedEventArgs e)
@@ -21,8 +20,7 @@ namespace GCSandbox.Droid
 
 		~TestItem()
 		{
-			var count = Interlocked.Decrement(ref s_count);
-			//System.Diagnostics.Debug.WriteLine($">>>>>> Finalizer, {count} allocated.");
+			TestHelpers.NotifyFinalization(_testType);
 		}
 	}
 }

@@ -16,7 +16,7 @@ namespace GCSandbox.Droid
 
 		public void RunTest()
 		{
-			TestStuff.RunTest(GenerateTestObjects, () => TestItem.s_count);
+			TestHelpers.RunTests(GenerateTestObjects);
 		}
 
 		void GenerateTestObjects() 
@@ -31,13 +31,13 @@ namespace GCSandbox.Droid
 		void CreateItemOnly() 
 		{
 			// Creating an instance of a .NET subclass of a native type
-			new TestItem(_context);
+			new TestItem(_context, "CreateOnly");
 		}
 
 		void WithLocalEventHandler() 
 		{
 			// Creating an instance of a .NET subclass of a native type
-			var x = new TestItem(_context);
+			var x = new TestItem(_context, "WithLocalEventHandler");
 
 			// And setting up a local handler for a native event
 			// This means that the TestItem has a reference to this (GarbageCollectionTester)
@@ -47,7 +47,7 @@ namespace GCSandbox.Droid
 		void WithListener()
 		{
 			// Creating an instance of a .NET subclass of a native type
-			var x = new TestItem(_context);
+			var x = new TestItem(_context, "WithListener");
 
 			// Set up a listener
 			x.AddOnLayoutChangeListener(new LayoutChangeListener());
@@ -56,7 +56,7 @@ namespace GCSandbox.Droid
 		void SelfEventHandler() 
 		{
 			// Creating an instance of a .NET subclass of a native type
-			var x = new TestItem(_context);
+			var x = new TestItem(_context, "SelfEventHandler");
 
 			// The class has its own event handler
 			// So it's holding a reference to itself
@@ -66,8 +66,8 @@ namespace GCSandbox.Droid
 		void MutualEventHandlers() 
 		{
 			// Creating two instances of a .NET subclass of a native type
-			var x = new TestItem(_context);
-			var y = new TestItem(_context);
+			var x = new TestItem(_context, "MutualEventHandlers");
+			var y = new TestItem(_context, "MutualEventHandlers");
 
 			// Set each as the other's event handler
 			// So each object will hold a reference to the other

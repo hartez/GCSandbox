@@ -1,23 +1,20 @@
-﻿using System.Diagnostics;
-using System.Threading;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml.Controls;
 
 namespace GCSandbox.UWP
 {
 	public class TestItem : TextBox 
 	{
-		public static int s_count;
+		private readonly string _testType;
 
-		public TestItem() 
+		public TestItem(string testType) 
 		{
-			var count = Interlocked.Increment(ref s_count);
-			//Debug.WriteLine($">>>>>> Constructor, {count} allocated.");
+			TestHelpers.NotifyAllocation(testType);
+			_testType = testType;
 		}
 
 		~TestItem() 
 		{
-			var count = Interlocked.Decrement(ref s_count);
-			//Debug.WriteLine($">>>>>> Finalizer, {count} allocated.");
+			TestHelpers.NotifyFinalization(_testType);
 		}
 
 		public void TextChangedHandler(object sender, Windows.UI.Xaml.Controls.TextChangedEventArgs e)
